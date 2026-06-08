@@ -7,7 +7,7 @@ Android app for finding and managing recipes. Users can sign up, add recipes, se
 
 ## Demo video
 
-Link: (add before submission)
+[Watch demo](docs/demo.mp4)
 
 ## Screenshots
 
