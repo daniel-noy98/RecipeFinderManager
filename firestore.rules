@@ -1,0 +1,24 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /recipes/{recipeId} {
+      allow read: if resource.data.public == true
+        || (request.auth != null && resource.data.ownerId == request.auth.uid);
+
+      allow create: if request.auth != null
+        && request.resource.data.ownerId == request.auth.uid
+        && request.resource.data.public is bool;
+
+      allow update: if request.auth != null
+        && (
+          resource.data.ownerId == request.auth.uid
+          || request.resource.data.diff(resource.data).affectedKeys()
+            .hasOnly(['favoriteUserIds', 'updatedAtMillis'])
+        );
+
+      allow delete: if request.auth != null
+        && resource.data.ownerId == request.auth.uid;
+    }
+  }
+}
